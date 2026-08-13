@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>マイ スケジュールアプリ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 24px;
+            background: #f5f7fb;
+        }
+        h1 {
+            margin-bottom: 16px;
+        }
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .month-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            max-width: 900px;
+        }
+        .month-header a {
+            text-decoration: none;
+            background: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #1f2937;
+        }
+        table {
+            width: 100%;
+            max-width: 900px;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th, td {
+            border: 1px solid #dfe7f1;
+            width: 14.28%;
+            height: 130px;
+            vertical-align: top;
+            padding: 8px;
+            background: #fff;
+        }
+        th {
+            background: #edf2ff;
+            height: 40px;
+            text-align: center;
+        }
+        .other-month {
+            background: #f8fafc;
+            color: #94a3b8;
+        }
+        .day-number {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            background: #dbeafe;
+            color: #1e3a8a;
+            border-radius: 4px;
+            padding: 4px 6px;
+            margin-bottom: 4px;
+            font-size: 12px;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>予定管理アプリ</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="title" placeholder="予定のタイトル" required>
+        <input type="date" name="date" required>
+        <button type="submit">追加</button>
+    </form>
+
+    <div class="month-header">
+        <a th:href="@{/(year=${prevMonth.year}, month=${prevMonth.monthValue})}">前月</a>
+        <h2 th:text="${currentYear} + '年 ' + ${currentMonth} + '月'">2026年8月</h2>
+        <a th:href="@{/(year=${nextMonth.year}, month=${nextMonth.monthValue})}">次月</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>日</th>
+                <th>月</th>
+                <th>火</th>
+                <th>水</th>
+                <th>木</th>
+                <th>金</th>
+                <th>土</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="week : ${calendarWeeks}">
+                <td th:each="day : ${week}"
+                    th:classappend="${day.monthValue != currentMonth} ? 'other-month' : ''">
+                    <div class="day-number" th:text="${day.dayOfMonth}">1</div>
+                    <ul>
+                        <li th:each="schedule : ${scheduleMap[day.toString()]}"
+                            th:text="${schedule.title}">予定</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
