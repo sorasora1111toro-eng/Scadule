@@ -31,3 +31,44 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar {
+    archiveFileName = 'ScaduleDesktop.jar'
+    manifest {
+        attributes 'Main-Class': 'com.example.demo.DemoApplication'
+    }
+}
+
+tasks.register('fatJar', Jar) {
+    archiveFileName = 'ScaduleDesktop-fat.jar'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes 'Main-Class': 'com.example.demo.DemoApplication'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
+tasks.register('packageWinExe', Exec) {
+    dependsOn 'fatJar'
+    def packageInput = layout.buildDirectory.dir('package-input')
+    doFirst {
+        delete packageInput
+        copy {
+            from tasks.named('fatJar').get().archiveFile
+            into packageInput
+        }
+        delete layout.buildDirectory.dir('appimage')
+    }
+    executable = 'C:/Program Files/Java/jdk-26.0.1/bin/jpackage.exe'
+    commandLine executable,
+        '--type', 'app-image',
+        '--name', 'ScaduleDesktop',
+        '--app-version', '1.0.0',
+        '--input', packageInput.get().asFile,
+        '--main-jar', 'ScaduleDesktop-fat.jar',
+        '--main-class', 'com.example.demo.DemoApplication',
+        '--dest', 'build/appimage'
+}
