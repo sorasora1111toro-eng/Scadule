@@ -4,117 +4,230 @@
     <meta charset="UTF-8">
     <title>マイ スケジュールアプリ</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: Arial, sans-serif;
-            margin: 24px;
-            background: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         h1 {
-            margin-bottom: 16px;
+            color: #333;
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 32px;
+        }
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
         }
         form {
-            margin-bottom: 20px;
             display: flex;
-            gap: 8px;
+            gap: 12px;
             flex-wrap: wrap;
+            align-items: center;
+        }
+        input, button {
+            padding: 10px 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        input[type="text"], input[type="date"] {
+            flex: 1;
+            min-width: 150px;
+            background: white;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button[type="submit"] {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 100px;
+        }
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
         .month-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
-            max-width: 900px;
+            margin-bottom: 20px;
         }
-        .month-header a {
+        .month-header h2 {
+            font-size: 24px;
+            color: #333;
+            flex: 1;
+            text-align: center;
+        }
+        .month-nav {
+            display: flex;
+            gap: 12px;
+        }
+        .month-nav a {
             text-decoration: none;
             background: #e2e8f0;
-            padding: 8px 12px;
+            padding: 8px 16px;
             border-radius: 6px;
-            color: #1f2937;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .month-nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
         }
         table {
             width: 100%;
-            max-width: 900px;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         th, td {
-            border: 1px solid #dfe7f1;
-            width: 14.28%;
-            height: 130px;
+            border: 2px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
             vertical-align: top;
-            padding: 8px;
-            background: #fff;
+            height: 140px;
         }
         th {
-            background: #edf2ff;
-            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
             text-align: center;
+            height: auto;
         }
         .other-month {
-            background: #f8fafc;
-            color: #94a3b8;
+            background: #f5f5f5;
+            color: #999;
         }
         .day-number {
             font-weight: bold;
-            margin-bottom: 6px;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
-        ul {
+        .schedules-list {
             list-style: none;
-            padding: 0;
-            margin: 0;
+            max-height: 100px;
+            overflow-y: auto;
         }
-        li {
-            background: #dbeafe;
-            color: #1e3a8a;
+        .schedule-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border-radius: 4px;
-            padding: 4px 6px;
+            padding: 6px 8px;
             margin-bottom: 4px;
-            font-size: 12px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             word-break: break-word;
+            transition: all 0.3s ease;
+        }
+        .schedule-item:hover {
+            transform: translateX(2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+        .schedule-title {
+            flex: 1;
+            min-width: 0;
+        }
+        .delete-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-left: 6px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .delete-btn:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+        .other-month .day-number {
+            color: #999;
         }
     </style>
 </head>
 <body>
-    <h1>予定管理アプリ</h1>
+    <div class="container">
+        <h1>📅 予定管理アプリ</h1>
 
-    <form action="/add" method="post">
-        <input type="text" name="title" placeholder="予定のタイトル" required>
-        <input type="date" name="date" required>
-        <button type="submit">追加</button>
-    </form>
+        <div class="form-section">
+            <form action="/add" method="post">
+                <input type="text" name="title" placeholder="予定のタイトルを入力..." required>
+                <input type="date" name="date" required>
+                <button type="submit">追加</button>
+            </form>
+        </div>
 
-    <div class="month-header">
-        <a th:href="@{/(year=${prevMonth.year}, month=${prevMonth.monthValue})}">前月</a>
-        <h2 th:text="${currentYear} + '年 ' + ${currentMonth} + '月'">2026年8月</h2>
-        <a th:href="@{/(year=${nextMonth.year}, month=${nextMonth.monthValue})}">次月</a>
+        <div class="month-header">
+            <div class="month-nav">
+                <a th:href="@{/(year=${prevMonth.year}, month=${prevMonth.monthValue})}">⬅ 前月</a>
+            </div>
+            <h2 th:text="${currentYear} + '年 ' + ${currentMonth} + '月'">2026年8月</h2>
+            <div class="month-nav">
+                <a th:href="@{/(year=${nextMonth.year}, month=${nextMonth.monthValue})}">次月 ➡</a>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>日</th>
+                    <th>月</th>
+                    <th>火</th>
+                    <th>水</th>
+                    <th>木</th>
+                    <th>金</th>
+                    <th>土</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="week : ${calendarWeeks}">
+                    <td th:each="day : ${week}"
+                        th:classappend="${day.monthValue != currentMonth} ? 'other-month' : ''">
+                        <div class="day-number" th:text="${day.dayOfMonth}">1</div>
+                        <ul class="schedules-list">
+                            <li th:each="schedule : ${scheduleMap[day.toString()]}"
+                                class="schedule-item">
+                                <span class="schedule-title" th:text="${schedule.title}">予定</span>
+                                <a th:href="@{/delete/{id}(id=${schedule.id})}" 
+                                   onclick="return confirm('削除してもよろしいですか？');"
+                                   class="delete-btn">削除</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>日</th>
-                <th>月</th>
-                <th>火</th>
-                <th>水</th>
-                <th>木</th>
-                <th>金</th>
-                <th>土</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="week : ${calendarWeeks}">
-                <td th:each="day : ${week}"
-                    th:classappend="${day.monthValue != currentMonth} ? 'other-month' : ''">
-                    <div class="day-number" th:text="${day.dayOfMonth}">1</div>
-                    <ul>
-                        <li th:each="schedule : ${scheduleMap[day.toString()]}"
-                            th:text="${schedule.title}">予定</li>
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </body>
 </html>
