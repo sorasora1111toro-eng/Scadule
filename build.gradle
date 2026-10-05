@@ -67,6 +67,9 @@ tasks.register('packageWinExe', Exec) {
         '--type', 'app-image',
         '--name', 'ScaduleDesktop',
         '--app-version', '1.0.0',
+		bootRun {
+    mainClass = 'com.example.demo.DemoApplication'
+}
         '--input', packageInput.get().asFile,
         '--main-jar', 'ScaduleDesktop-fat.jar',
         '--main-class', 'com.example.demo.DemoApplication',
