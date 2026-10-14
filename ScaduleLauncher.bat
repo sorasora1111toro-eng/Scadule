@@ -1,4 +1,4 @@
 @echo off
 cd /d "%~dp0"
-java -jar build\libs\demo-0.0.1-SNAPSHOT.jar
-pause
+call gradlew.bat runDesktop
+if errorlevel 1 pause

@@ -1,17 +1,18 @@
 # SCADULE
 
-A simple calendar-based schedule application built with Java and Spring Boot.
+A simple calendar-based schedule application with a Java Swing desktop app and a Spring Boot web version.
 
 ## Features
 
 - Add a schedule with a title and date
 - View scheduled items directly in a monthly calendar grid
 - Move between previous and next months
-- Lightweight in-memory storage for demo/prototype use
+- Local H2 database for persistent schedule storage
 
 ## Tech stack
 
 - Java 26
+- Swing (desktop UI)
 - Spring Boot 4.1.0
 - Thymeleaf
 - Gradle
@@ -21,15 +22,10 @@ A simple calendar-based schedule application built with Java and Spring Boot.
 On Windows:
 
 ```powershell
-cd C:\Scadule
-./gradlew.bat bootRun
+.\gradlew.bat runDesktop
 ```
 
-Then open:
-
-```text
-http://localhost:35676/
-```
+Run the command from the project directory. Alternatively, double-click `ScaduleLauncher.vbs` or `ScaduleLauncher.bat`.
 
 ## Project structure
 
@@ -39,7 +35,7 @@ http://localhost:35676/
 
 ## Notes
 
-This is a simple prototype. The schedule list is stored in memory, not a database.
+The desktop app stores schedules in a local H2 database under the user's `ScaduleDesktop` folder.
 
 ## GitHub sharing
 

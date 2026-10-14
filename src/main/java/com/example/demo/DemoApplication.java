@@ -1,13 +1,11 @@
 package com.example.demo;
 
-import javax.swing.SwingUtilities;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class DemoApplication {
-
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            DesktopScheduleApp app = new DesktopScheduleApp();
-            app.setVisible(true);
-        });
+        SpringApplication.run(DemoApplication.class, args);
     }
 }

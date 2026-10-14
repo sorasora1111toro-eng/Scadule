@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html lang="ja" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>マイ スケジュールアプリ</title>
     <style>
         * {
@@ -10,47 +11,41 @@
             box-sizing: border-box;
         }
         :root {
-            --ink: #26334d;
-            --muted: #71809b;
-            --line: #e4e9f3;
-            --accent: #ff6b6b;
-            --accent-dark: #e85662;
-            --violet: #6657d9;
-            --blue: #4d8df7;
+            --ink: #202b3c;
+            --muted: #748094;
+            --line: #e8edf3;
+            --accent: #5368d5;
+            --accent-dark: #4356bd;
+            --surface: #ffffff;
         }
         body {
-            font-family: 'Trebuchet MS', 'Yu Gothic', 'Meiryo', sans-serif;
+            font-family: "Yu Gothic", "Meiryo", sans-serif;
             color: var(--ink);
-            background: #f4f7fc;
-            background-image: radial-gradient(circle at 8% 12%, rgba(255, 185, 92, 0.34) 0 90px, transparent 91px),
-                              radial-gradient(circle at 94% 8%, rgba(105, 91, 214, 0.26) 0 140px, transparent 141px),
-                              linear-gradient(145deg, #fff8f1 0%, #f4f7fc 48%, #eef1ff 100%);
+            background: #f5f7fb;
             min-height: 100vh;
-            padding: 34px 20px;
+            padding: 40px 20px;
         }
         .container {
-            max-width: 1120px;
+            max-width: 1180px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.88);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            border-radius: 28px;
-            padding: 34px;
-            box-shadow: 0 24px 70px rgba(57, 67, 115, 0.16);
-            backdrop-filter: blur(14px);
+            background: var(--surface);
+            border: 1px solid #edf0f5;
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 16px 48px rgba(32, 43, 60, 0.08);
         }
         h1 {
             color: var(--ink);
-            margin-bottom: 28px;
-            text-align: center;
-            font-size: clamp(27px, 4vw, 38px);
-            letter-spacing: 0.04em;
+            margin-bottom: 26px;
+            font-size: clamp(25px, 4vw, 32px);
+            letter-spacing: 0.02em;
         }
         .form-section {
-            background: linear-gradient(110deg, #fff0e5, #fff9f0 48%, #eef3ff);
-            border: 1px solid #f4dfd7;
-            padding: 18px;
-            border-radius: 18px;
-            margin-bottom: 30px;
+            background: #f8f9fc;
+            border: 1px solid var(--line);
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 28px;
         }
         form {
             display: flex;
@@ -59,181 +54,186 @@
             align-items: center;
         }
         input, button {
-            padding: 12px 16px;
-            border: 1px solid #dce2ee;
-            border-radius: 11px;
+            min-height: 44px;
+            padding: 10px 14px;
+            border: 1px solid #dce2eb;
+            border-radius: 9px;
             font-size: 14px;
-            transition: all 0.25s ease;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
         input[type="text"], input[type="date"] {
             flex: 1;
-            min-width: 150px;
-            background: rgba(255, 255, 255, 0.92);
+            min-width: 180px;
+            background: var(--surface);
         }
-        input:focus {
+        input:focus-visible, button:focus-visible, a:focus-visible {
             outline: none;
-            border-color: var(--blue);
-            box-shadow: 0 0 0 4px rgba(77, 141, 247, 0.14);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(83, 104, 213, 0.16);
         }
         button[type="submit"] {
-            background: linear-gradient(135deg, var(--accent), #ff9a62);
+            background: var(--accent);
             color: white;
             border: none;
             font-weight: 600;
             cursor: pointer;
-            min-width: 110px;
+            min-width: 100px;
         }
         button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(232, 86, 98, 0.28);
+            background: var(--accent-dark);
         }
         .month-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 18px;
-            gap: 18px;
+            margin-bottom: 14px;
+            gap: 12px;
         }
         .month-header h2 {
-            font-size: clamp(20px, 3vw, 28px);
+            font-size: clamp(19px, 3vw, 25px);
             color: var(--ink);
             flex: 1;
             text-align: center;
         }
         .month-nav {
             display: flex;
-            gap: 12px;
         }
         .month-nav a {
             text-decoration: none;
-            background: white;
+            background: var(--surface);
             border: 1px solid var(--line);
-            padding: 10px 14px;
-            border-radius: 11px;
-            color: var(--ink);
-            font-weight: 500;
+            padding: 9px 13px;
+            border-radius: 9px;
+            color: #465267;
+            font-size: 14px;
+            font-weight: 600;
             white-space: nowrap;
-            transition: all 0.25s ease;
+            transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
         }
         .month-nav a:hover {
-            background: var(--violet);
-            border-color: var(--violet);
-            color: white;
-            transform: translateY(-2px);
+            background: #f2f4ff;
+            border-color: #cbd2f5;
+            color: var(--accent-dark);
+        }
+        .calendar-scroll {
+            overflow-x: auto;
+            border-radius: 12px;
         }
         table {
             width: 100%;
+            min-width: 760px;
             border-collapse: separate;
-            border-spacing: 6px;
+            border-spacing: 4px;
             background: transparent;
         }
         th, td {
             border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 11px;
+            border-radius: 10px;
+            padding: 10px;
             text-align: left;
             vertical-align: top;
-            height: 136px;
+            height: 132px;
         }
         th {
-            background: linear-gradient(135deg, var(--violet), #8b72e8);
-            color: white;
+            background: #f5f6fa;
+            color: #626e80;
             font-weight: 600;
             text-align: center;
             height: auto;
-            border: 0;
-            padding: 12px 8px;
-            letter-spacing: 0.08em;
+            border-color: #eef0f5;
+            padding: 11px 8px;
+            letter-spacing: 0.04em;
         }
-        th:first-child { background: linear-gradient(135deg, #ff7782, #ff9b70); }
-        th:last-child { background: linear-gradient(135deg, #4d8df7, #58b4e8); }
-        td { background: rgba(255, 255, 255, 0.84); transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        td:hover { transform: translateY(-3px); box-shadow: 0 9px 18px rgba(82, 98, 145, 0.12); }
+        th:first-child { color: #c65c68; }
+        th:last-child { color: #4e78bb; }
+        td { background: var(--surface); transition: background 0.2s ease, border-color 0.2s ease; }
+        td:hover { background: #fbfcff; border-color: #d8deef; }
         .other-month {
-            background: rgba(239, 242, 248, 0.65);
-            color: #aab3c4;
-            opacity: 0.72;
+            background: #fafbfc;
+            color: #a7afbd;
         }
         .day-number {
-            font-weight: bold;
-            color: var(--ink);
-            margin-bottom: 10px;
-            font-size: 16px;
+            font-weight: 600;
+            color: #3d485b;
+            margin-bottom: 8px;
+            font-size: 14px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+            min-width: 28px;
+            height: 28px;
+            border-radius: 8px;
         }
-        td:first-child .day-number { color: var(--accent-dark); }
-        td:last-child .day-number { color: #3679da; }
+        td:first-child .day-number { color: #c65c68; }
+        td:last-child .day-number { color: #4e78bb; }
         .schedules-list {
             list-style: none;
-            max-height: 92px;
+            max-height: 84px;
             overflow-y: auto;
         }
         .schedule-item {
-            background: linear-gradient(135deg, #6657d9, #8877e8);
-            color: white;
-            border-radius: 8px;
-            padding: 7px 8px;
-            margin-bottom: 5px;
-            font-size: 13px;
+            background: #eef0ff;
+            color: #414d91;
+            border: 1px solid #e4e7fc;
+            border-radius: 7px;
+            padding: 6px 7px;
+            margin-bottom: 4px;
+            font-size: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             word-break: break-word;
-            transition: all 0.25s ease;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
-        .schedule-item:hover {
-            transform: translateX(2px);
-            box-shadow: 0 5px 12px rgba(102, 87, 217, 0.32);
-        }
+        .schedule-item:hover { background: #e7eaff; border-color: #d8defa; }
         .schedule-title {
             flex: 1;
             min-width: 0;
         }
         .delete-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: transparent;
+            color: #6d7691;
             border: none;
-            border-radius: 5px;
-            padding: 3px 6px;
-            font-size: 11px;
+            border-radius: 4px;
+            padding: 3px 5px;
+            font-size: 10px;
             cursor: pointer;
-            margin-left: 6px;
+            margin-left: 4px;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            text-decoration: none;
+            transition: color 0.2s ease, background 0.2s ease;
         }
         .delete-btn:hover {
-            background: var(--accent);
-            transform: scale(1.05);
+            background: #fff0f1;
+            color: #bd4655;
         }
         .other-month .day-number {
-            color: #aab3c4;
+            color: #a7afbd;
         }
-        @media (max-width: 720px) {
-            body { padding: 14px 8px; }
-            .container { padding: 20px 10px; border-radius: 20px; }
+        @media (max-width: 600px) {
+            body { padding: 16px 10px; }
+            .container { padding: 22px 14px; border-radius: 15px; }
+            h1 { margin-bottom: 20px; }
+            .form-section { padding: 12px; margin-bottom: 22px; }
+            input[type="text"], input[type="date"] { flex-basis: 100%; }
+            button[type="submit"] { width: 100%; }
+            .month-header { gap: 6px; }
             .month-nav a { padding: 8px 9px; font-size: 12px; }
             table { border-spacing: 3px; }
-            th, td { padding: 7px 4px; border-radius: 9px; }
-            td { height: 106px; }
-            .day-number { width: 24px; height: 24px; font-size: 13px; margin-bottom: 5px; }
-            .schedule-item { padding: 5px; font-size: 11px; }
-            .delete-btn { font-size: 9px; padding: 2px 4px; }
+            th, td { padding: 8px; }
+            td { height: 124px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📅 予定管理アプリ</h1>
+        <h1>予定管理アプリ</h1>
 
         <div class="form-section">
             <form action="/add" method="post">
-                <input type="text" name="title" placeholder="予定のタイトルを入力..." required>
-                <input type="date" name="date" required>
+                <input type="text" name="title" placeholder="予定のタイトルを入力..." aria-label="予定のタイトル" required>
+                <input type="date" name="date" aria-label="予定の日付" required>
                 <button type="submit">追加</button>
             </form>
         </div>
@@ -248,36 +248,38 @@
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>日</th>
-                    <th>月</th>
-                    <th>火</th>
-                    <th>水</th>
-                    <th>木</th>
-                    <th>金</th>
-                    <th>土</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="week : ${calendarWeeks}">
-                    <td th:each="day : ${week}"
-                        th:classappend="${day.monthValue != currentMonth} ? 'other-month' : ''">
-                        <div class="day-number" th:text="${day.dayOfMonth}">1</div>
-                        <ul class="schedules-list">
-                            <li th:each="schedule : ${scheduleMap[day.toString()]}"
-                                class="schedule-item">
-                                <span class="schedule-title" th:text="${schedule.title}">予定</span>
-                                <a th:href="@{/delete/{id}(id=${schedule.id})}" 
-                                   onclick="return confirm('削除してもよろしいですか？');"
-                                   class="delete-btn">削除</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="calendar-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">日</th>
+                        <th scope="col">月</th>
+                        <th scope="col">火</th>
+                        <th scope="col">水</th>
+                        <th scope="col">木</th>
+                        <th scope="col">金</th>
+                        <th scope="col">土</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="week : ${calendarWeeks}">
+                        <td th:each="day : ${week}"
+                            th:classappend="${day.monthValue != currentMonth} ? 'other-month' : ''">
+                            <div class="day-number" th:text="${day.dayOfMonth}">1</div>
+                            <ul class="schedules-list">
+                                <li th:each="schedule : ${scheduleMap[day.toString()]}"
+                                    class="schedule-item">
+                                    <span class="schedule-title" th:text="${schedule.title}">予定</span>
+                                    <a th:href="@{/delete/{id}(id=${schedule.id})}"
+                                       onclick="return confirm('削除してもよろしいですか？');"
+                                       class="delete-btn">削除</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
