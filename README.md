@@ -11,9 +11,9 @@ A simple calendar-based schedule application with a Java Swing desktop app and a
 
 ## Tech stack
 
-- Java 26
+- Java 25
 - Swing (desktop UI)
-- Spring Boot 4.1.0
+- Spring Boot 4.1.2
 - Thymeleaf
 - Gradle
 
